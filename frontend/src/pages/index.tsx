@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import {
   List,
@@ -11,6 +12,7 @@ import {
   Container,
   Typography,
   IconButton,
+  Stack,
 } from "@mui/material";
 
 import { TasksResponse, getTasks } from "../modules/apiClient";
@@ -43,9 +45,14 @@ const IndexPage = () => {
               <ListItem
                 key={i}
                 secondaryAction={
-                  <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
-                  </IconButton>
+                  <Stack direction="row">
+                    <IconButton aria-label="fingerprint">
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton aria-label="fingerprint">
+                      <DeleteIcon />
+                    </IconButton>
+                  </Stack>
                 }
               >
                 <ListItemAvatar>
