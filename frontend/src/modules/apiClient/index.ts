@@ -27,3 +27,7 @@ export interface TasksResponse {
 export const getTasks = (): AxiosPromise<TasksResponse> => {
   return axios.get(`${process.env.NEXT_PUBLIC_REST_HOST}/tasks`);
 };
+
+export const deleteTask = (taskId: number): AxiosPromise => {
+  return axios.delete(`${process.env.NEXT_PUBLIC_REST_HOST}/tasks/${taskId}`);
+};

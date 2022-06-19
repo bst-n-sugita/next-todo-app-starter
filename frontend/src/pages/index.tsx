@@ -15,15 +15,28 @@ import {
   Stack,
 } from "@mui/material";
 
-import { TasksResponse, getTasks } from "../modules/apiClient";
+import { TasksResponse, getTasks, deleteTask } from "../modules/apiClient";
 
-const OperationButtons = () => {
+interface OperationButtonProps {
+  taskId: number;
+}
+
+const OperationButtons: React.FC<OperationButtonProps> = (props) => {
+  const handleDelete = useCallback(async () => {
+    try {
+      await deleteTask(props.taskId);
+      // fetchTasks();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
   return (
     <Stack direction="row">
       <IconButton aria-label="edit">
         <EditIcon />
       </IconButton>
-      <IconButton edge="end" aria-label="delete">
+      <IconButton edge="end" aria-label="delete" onClick={handleDelete}>
         <DeleteIcon />
       </IconButton>
     </Stack>
@@ -55,7 +68,10 @@ const IndexPage = () => {
         <Container maxWidth="sm">
           <List sx={{ width: "100%" }}>
             {tasks.tasks.map((task, i) => (
-              <ListItem key={i} secondaryAction={<OperationButtons />}>
+              <ListItem
+                key={i}
+                secondaryAction={<OperationButtons taskId={task.id} />}
+              >
                 <ListItemAvatar>
                   <Avatar>
                     <FactCheckIcon />
