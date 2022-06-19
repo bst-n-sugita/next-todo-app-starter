@@ -46,10 +46,10 @@ const IndexPage = () => {
                 key={i}
                 secondaryAction={
                   <Stack direction="row">
-                    <IconButton aria-label="fingerprint">
+                    <IconButton aria-label="edit">
                       <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="fingerprint">
+                    <IconButton edge="end" aria-label="delete">
                       <DeleteIcon />
                     </IconButton>
                   </Stack>
