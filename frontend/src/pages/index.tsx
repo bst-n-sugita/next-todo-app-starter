@@ -54,8 +54,10 @@ const IndexPage = () => {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={task.name}
-                  secondary={task.description}
+                  primary={task.description}
+                  secondary={`作成日時：${new Date(
+                    task.created_at
+                  ).toLocaleString()}`}
                 />
               </ListItem>
             ))}
