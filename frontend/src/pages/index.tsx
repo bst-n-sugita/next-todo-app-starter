@@ -17,6 +17,19 @@ import {
 
 import { TasksResponse, getTasks } from "../modules/apiClient";
 
+const OperationButtons = () => {
+  return (
+    <Stack direction="row">
+      <IconButton aria-label="edit">
+        <EditIcon />
+      </IconButton>
+      <IconButton edge="end" aria-label="delete">
+        <DeleteIcon />
+      </IconButton>
+    </Stack>
+  );
+};
+
 const IndexPage = () => {
   const [tasks, setTasks] = useState<TasksResponse | null>(null);
 
@@ -42,19 +55,7 @@ const IndexPage = () => {
         <Container maxWidth="sm">
           <List sx={{ width: "100%" }}>
             {tasks.tasks.map((task, i) => (
-              <ListItem
-                key={i}
-                secondaryAction={
-                  <Stack direction="row">
-                    <IconButton aria-label="edit">
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </Stack>
-                }
-              >
+              <ListItem key={i} secondaryAction={<OperationButtons />}>
                 <ListItemAvatar>
                   <Avatar>
                     <FactCheckIcon />
