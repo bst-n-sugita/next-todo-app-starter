@@ -1,5 +1,3 @@
-import { useState, useCallback, useEffect } from "react";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
@@ -15,7 +13,7 @@ import {
   Stack,
 } from "@mui/material";
 
-import { TasksResponse, getTasks } from "../modules/apiClient";
+import { useFetchTasks } from "../modules/hooks/useFetchTasks";
 
 const OperationButtons = () => {
   return (
@@ -31,20 +29,7 @@ const OperationButtons = () => {
 };
 
 const IndexPage = () => {
-  const [tasks, setTasks] = useState<TasksResponse | null>(null);
-
-  const fetchTasks = useCallback(async () => {
-    try {
-      const { data } = await getTasks();
-      setTasks(data);
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  const { tasks } = useFetchTasks();
 
   return (
     <>
