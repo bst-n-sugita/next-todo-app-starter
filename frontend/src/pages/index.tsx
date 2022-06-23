@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,7 +15,8 @@ import {
   Stack,
 } from "@mui/material";
 
-import { TasksResponse, getTasks, deleteTask } from "../modules/apiClient";
+import { deleteTask } from "../modules/apiClient/tasks/deleteTask";
+import { useFetchTasks } from "../modules/hooks/useFetchTasks";
 
 interface OperationButtonProps {
   taskId: number;
@@ -44,20 +45,7 @@ const OperationButtons: React.FC<OperationButtonProps> = (props) => {
 };
 
 const IndexPage = () => {
-  const [tasks, setTasks] = useState<TasksResponse | null>(null);
-
-  const fetchTasks = useCallback(async () => {
-    try {
-      const { data } = await getTasks();
-      setTasks(data);
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  const { tasks } = useFetchTasks();
 
   return (
     <>
@@ -67,9 +55,9 @@ const IndexPage = () => {
       {tasks && (
         <Container maxWidth="sm">
           <List sx={{ width: "100%" }}>
-            {tasks.tasks.map((task, i) => (
+            {tasks.tasks.map((task) => (
               <ListItem
-                key={i}
+                key={task.id}
                 secondaryAction={<OperationButtons taskId={task.id} />}
               >
                 <ListItemAvatar>

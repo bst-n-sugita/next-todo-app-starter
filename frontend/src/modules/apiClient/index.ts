@@ -1,6 +1,10 @@
-import axios, { AxiosPromise } from "axios";
+import axios from "axios";
 
-axios.interceptors.request.use(
+export const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_REST_HOST,
+});
+
+axiosInstance.interceptors.request.use(
   async (config) => {
     config.headers = {
       "x-hasura-admin-secret": process.env.NEXT_PUBLIC_SECRET,
@@ -11,23 +15,3 @@ axios.interceptors.request.use(
     Promise.reject(error);
   }
 );
-
-export interface Task {
-  id: number;
-  name: string;
-  description: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface TasksResponse {
-  tasks: Task[];
-}
-
-export const getTasks = (): AxiosPromise<TasksResponse> => {
-  return axios.get(`${process.env.NEXT_PUBLIC_REST_HOST}/tasks`);
-};
-
-export const deleteTask = (taskId: number): AxiosPromise => {
-  return axios.delete(`${process.env.NEXT_PUBLIC_REST_HOST}/tasks/${taskId}`);
-};
