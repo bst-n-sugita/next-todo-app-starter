@@ -39,8 +39,8 @@ const IndexPage = () => {
       {tasks && (
         <Container maxWidth="sm">
           <List sx={{ width: "100%" }}>
-            {tasks.tasks.map((task, i) => (
-              <ListItem key={i} secondaryAction={<OperationButtons />}>
+            {tasks.tasks.map((task) => (
+              <ListItem key={task.id} secondaryAction={<OperationButtons />}>
                 <ListItemAvatar>
                   <Avatar>
                     <FactCheckIcon />
