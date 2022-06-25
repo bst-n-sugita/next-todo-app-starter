@@ -22,7 +22,7 @@ interface OperationButtonProps {
   taskId: number;
 }
 
-const OperationButtons: React.FC<OperationButtonProps> = (props) => {
+const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
   const handleDelete = useCallback(async () => {
     try {
       await deleteTask(props.taskId);
