@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
@@ -23,14 +21,14 @@ interface OperationButtonProps {
 }
 
 const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
-  const handleDelete = useCallback(async () => {
+  const handleDelete = async () => {
     try {
       await deleteTask(props.taskId);
       // fetchTasks();
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  };
 
   return (
     <Stack direction="row">
