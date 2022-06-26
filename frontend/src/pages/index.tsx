@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
@@ -16,10 +15,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 import { addTask } from "../modules/apiClient/tasks/addTask";
 import { deleteTask } from "../modules/apiClient/tasks/deleteTask";
 import { useFetchTasks } from "../modules/hooks/useFetchTasks";
+
+interface IFormInputs {
+  title: string;
+  description: string;
+}
 
 interface OperationButtonProps {
   onDelete: () => void;
@@ -40,19 +46,37 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
 
 const IndexPage = () => {
   const { tasks, setTasks } = useFetchTasks();
-  const [newTitle, setNewTitle] = useState("");
-  const [newDescription, setNewDescription] = useState("");
 
-  const handleSubmit = async () => {
+  const newTaskSchema = yup
+    .object({
+      title: yup
+        .string()
+        .max(20, "20文字以内にしてください")
+        .required("入力必須です"),
+      description: yup
+        .string()
+        .max(20, "20文字以内にしてください")
+        .required("入力必須です"),
+    })
+    .required();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInputs>({
+    resolver: yupResolver(newTaskSchema),
+  });
+
+  const onSubmit = async (inputs: IFormInputs) => {
+    console.log(inputs);
     try {
       const params = {
-        name: newTitle,
-        description: newDescription,
+        name: inputs.title,
+        description: inputs.description,
       };
       const { data } = await addTask(params);
       setTasks((prev) => [...prev, data.addTask]);
-      setNewTitle("");
-      setNewDescription("");
     } catch (e) {
       console.log(e);
     }
@@ -81,8 +105,10 @@ const IndexPage = () => {
             variant="outlined"
             size="small"
             sx={{ width: "40%" }}
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
+            required
+            {...register("title")}
+            error={"title" in errors}
+            helperText={errors.title?.message}
           />
           <TextField
             id="description"
@@ -90,15 +116,12 @@ const IndexPage = () => {
             variant="outlined"
             size="small"
             sx={{ width: "60%" }}
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
+            required
+            {...register("description")}
+            error={"description" in errors}
+            helperText={errors.description?.message}
           />
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleSubmit();
-            }}
-          >
+          <Button variant="contained" onClick={handleSubmit(onSubmit)}>
             作成
           </Button>
         </Stack>
