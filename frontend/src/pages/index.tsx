@@ -34,12 +34,13 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
 };
 
 const IndexPage = () => {
-  const { tasks, fetchTasks } = useFetchTasks();
+  const { tasks, setTasks } = useFetchTasks();
 
   const handleDelete = async (id: number) => {
     try {
       await deleteTask(id);
-      fetchTasks();
+      const updatedTasks = tasks.filter((task) => task.id !== id);
+      setTasks(updatedTasks);
     } catch (e) {
       console.log(e);
     }
