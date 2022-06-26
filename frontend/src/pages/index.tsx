@@ -118,7 +118,11 @@ const IndexPage = () => {
             error={"description" in errors}
             helperText={errors.description?.message}
           />
-          <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+          <Button
+            variant="contained"
+            sx={{ height: "40px" }}
+            onClick={handleSubmit(onSubmit)}
+          >
             作成
           </Button>
         </Stack>
