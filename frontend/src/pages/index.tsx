@@ -39,7 +39,7 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
   );
 };
 
-interface newTaskFormParams {
+interface newTaskFormValues {
   title: string;
   description: string;
 }
@@ -62,11 +62,11 @@ const IndexPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<newTaskFormParams>({
+  } = useForm<newTaskFormValues>({
     resolver: yupResolver(newTaskSchema),
   });
 
-  const onSubmit = async (formValues: newTaskFormParams) => {
+  const onSubmit = async (formValues: newTaskFormValues) => {
     try {
       const params = {
         name: formValues.title,
