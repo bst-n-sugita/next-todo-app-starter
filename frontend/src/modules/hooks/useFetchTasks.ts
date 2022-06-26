@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
-import { getTasks, Task } from "../apiClient/tasks/getTasks";
+import { Task } from "../apiClient/tasks";
+import { getTasks } from "../apiClient/tasks/getTasks";
 
 export const useFetchTasks = () => {
   const [tasks, setTasks] = useState<Task[] | null>(null);
