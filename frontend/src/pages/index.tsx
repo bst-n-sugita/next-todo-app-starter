@@ -22,11 +22,6 @@ import { addTask } from "../modules/apiClient/tasks/addTask";
 import { deleteTask } from "../modules/apiClient/tasks/deleteTask";
 import { useFetchTasks } from "../modules/hooks/useFetchTasks";
 
-interface IFormInputs {
-  title: string;
-  description: string;
-}
-
 interface OperationButtonProps {
   onDelete: () => void;
 }
@@ -44,36 +39,38 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
   );
 };
 
+interface newTaskFormParams {
+  title: string;
+  description: string;
+}
+
 const IndexPage = () => {
   const { tasks, setTasks } = useFetchTasks();
 
-  const newTaskSchema = yup
-    .object({
-      title: yup
-        .string()
-        .max(20, "20文字以内にしてください")
-        .required("入力必須です"),
-      description: yup
-        .string()
-        .max(20, "20文字以内にしてください")
-        .required("入力必須です"),
-    })
-    .required();
+  const newTaskSchema = yup.object({
+    title: yup
+      .string()
+      .max(20, "20文字以内にしてください")
+      .required("入力必須です"),
+    description: yup
+      .string()
+      .max(20, "20文字以内にしてください")
+      .required("入力必須です"),
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInputs>({
+  } = useForm<newTaskFormParams>({
     resolver: yupResolver(newTaskSchema),
   });
 
-  const onSubmit = async (inputs: IFormInputs) => {
-    console.log(inputs);
+  const onSubmit = async (formValues: newTaskFormParams) => {
     try {
       const params = {
-        name: inputs.title,
-        description: inputs.description,
+        name: formValues.title,
+        description: formValues.description,
       };
       const { data } = await addTask(params);
       setTasks((prev) => [...prev, data.addTask]);
