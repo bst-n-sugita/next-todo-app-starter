@@ -2,18 +2,12 @@ import { AxiosPromise } from "axios";
 
 import { axiosInstance } from "../index";
 
-export interface Task {
-  id: number;
-  name: string;
-  description: string;
-  created_at: string;
-  updated_at: string;
-}
+import { Task } from ".";
 
-export interface TasksResponse {
+export interface GetTasksResponse {
   tasks: Task[];
 }
 
-export const getTasks = (): AxiosPromise<TasksResponse> => {
+export const getTasks = (): AxiosPromise<GetTasksResponse> => {
   return axiosInstance.get("/tasks");
 };
