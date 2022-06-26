@@ -44,8 +44,6 @@ const IndexPage = () => {
   const [newDescription, setNewDescription] = useState("");
 
   const handleSubmit = async () => {
-    console.log(newTitle);
-    console.log(newDescription);
     try {
       const params = {
         name: newTitle,
