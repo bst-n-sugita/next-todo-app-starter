@@ -1,11 +1,13 @@
 import { AxiosPromise } from "axios";
 
-import { axiosInstance, Task } from "../index";
+import { axiosInstance } from "../index";
 
-export interface TasksResponse {
+import { Task } from ".";
+
+export interface GetTasksResponse {
   tasks: Task[];
 }
 
-export const getTasks = (): AxiosPromise<TasksResponse> => {
+export const getTasks = (): AxiosPromise<GetTasksResponse> => {
   return axiosInstance.get("/tasks");
 };
