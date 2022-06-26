@@ -53,7 +53,7 @@ const IndexPage = () => {
       {tasks && (
         <Container maxWidth="sm">
           <List sx={{ width: "100%" }}>
-            {tasks.tasks.map((task) => (
+            {tasks.map((task) => (
               <ListItem
                 key={task.id}
                 secondaryAction={
