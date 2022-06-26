@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-import { Task } from "../apiClient/tasks";
+import { Task } from "../apiClient/tasks/common";
 import { getTasks } from "../apiClient/tasks/getTasks";
 
 export const useFetchTasks = () => {

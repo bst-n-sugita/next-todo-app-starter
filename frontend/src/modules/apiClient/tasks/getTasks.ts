@@ -1,8 +1,7 @@
 import { AxiosPromise } from "axios";
 
-import { axiosInstance } from "../index";
-
-import { Task } from ".";
+import { axiosInstance } from "..";
+import { Task } from "./common";
 
 export interface GetTasksResponse {
   tasks: Task[];
