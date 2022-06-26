@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -40,20 +40,25 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
 
 const IndexPage = () => {
   const { tasks, setTasks } = useFetchTasks();
-  const [newTask, setNewTask] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
 
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = async () => {
+    console.log(newTitle);
+    console.log(newDescription);
     try {
       const params = {
-        name: "name",
-        description: "description",
+        name: newTitle,
+        description: newDescription,
       };
       const { data } = await addTask(params);
       setTasks((prev) => [...prev, data.addTask]);
+      setNewTitle("");
+      setNewDescription("");
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  };
 
   const handleDelete = async (taskId: number) => {
     try {
@@ -78,6 +83,8 @@ const IndexPage = () => {
             variant="outlined"
             size="small"
             sx={{ width: "40%" }}
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
           />
           <TextField
             id="description"
@@ -85,9 +92,15 @@ const IndexPage = () => {
             variant="outlined"
             size="small"
             sx={{ width: "60%" }}
-            onChange={(e) => setNewTask(e.target.value)}
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
           />
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleSubmit();
+            }}
+          >
             作成
           </Button>
         </Stack>
