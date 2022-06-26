@@ -17,25 +17,16 @@ import { deleteTask } from "../modules/apiClient/tasks/deleteTask";
 import { useFetchTasks } from "../modules/hooks/useFetchTasks";
 
 interface OperationButtonProps {
-  taskId: number;
+  onDelete: () => void;
 }
 
 const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
-  const handleDelete = async () => {
-    try {
-      await deleteTask(props.taskId);
-      // fetchTasks();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <Stack direction="row">
       <IconButton aria-label="edit">
         <EditIcon />
       </IconButton>
-      <IconButton edge="end" aria-label="delete" onClick={handleDelete}>
+      <IconButton edge="end" aria-label="delete" onClick={props.onDelete}>
         <DeleteIcon />
       </IconButton>
     </Stack>
@@ -43,7 +34,16 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
 };
 
 const IndexPage = () => {
-  const { tasks } = useFetchTasks();
+  const { tasks, fetchTasks } = useFetchTasks();
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteTask(id);
+      fetchTasks();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
@@ -56,7 +56,13 @@ const IndexPage = () => {
             {tasks.tasks.map((task) => (
               <ListItem
                 key={task.id}
-                secondaryAction={<OperationButtons taskId={task.id} />}
+                secondaryAction={
+                  <OperationButtons
+                    onDelete={() => {
+                      handleDelete(task.id);
+                    }}
+                  />
+                }
               >
                 <ListItemAvatar>
                   <Avatar>
