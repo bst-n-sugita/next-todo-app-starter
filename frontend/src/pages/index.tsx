@@ -65,6 +65,7 @@ const IndexPage = () => {
     formState: { errors },
   } = useForm<newTaskFormValues>({
     resolver: yupResolver(newTaskSchema),
+    mode: "onChange",
     defaultValues: {
       title: "",
       description: "",
