@@ -15,7 +15,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { addTask } from "../modules/apiClient/tasks/addTask";
@@ -59,11 +59,16 @@ const IndexPage = () => {
   });
 
   const {
-    register,
+    control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<newTaskFormValues>({
     resolver: yupResolver(newTaskSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+    },
   });
 
   const onSubmit = async (formValues: newTaskFormValues) => {
@@ -74,6 +79,7 @@ const IndexPage = () => {
       };
       const { data } = await addTask(params);
       setTasks((prev) => [...prev, data.addTask]);
+      reset();
     } catch (e) {
       console.log(e);
     }
@@ -96,27 +102,39 @@ const IndexPage = () => {
       </Typography>
       <Container maxWidth="sm">
         <Stack direction="row" spacing={1}>
-          <TextField
-            id="title"
-            label="タイトル"
-            variant="outlined"
-            size="small"
-            sx={{ width: "40%" }}
-            required
-            {...register("title")}
-            error={"title" in errors}
-            helperText={errors.title?.message}
+          <Controller
+            name="title"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="title"
+                label="タイトル"
+                variant="outlined"
+                size="small"
+                sx={{ width: "40%" }}
+                required
+                error={"title" in errors}
+                helperText={errors.title?.message}
+              />
+            )}
           />
-          <TextField
-            id="description"
-            label="内容"
-            variant="outlined"
-            size="small"
-            sx={{ width: "60%" }}
-            required
-            {...register("description")}
-            error={"description" in errors}
-            helperText={errors.description?.message}
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="description"
+                label="内容"
+                variant="outlined"
+                size="small"
+                sx={{ width: "60%" }}
+                required
+                error={"description" in errors}
+                helperText={errors.description?.message}
+              />
+            )}
           />
           <Button
             variant="contained"
