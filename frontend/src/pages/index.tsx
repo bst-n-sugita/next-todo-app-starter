@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,20 +20,35 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
+import EditModal from "../components/organisms/editModal";
 import { addTask } from "../modules/apiClient/tasks/addTask";
+import { Task } from "../modules/apiClient/tasks/common";
 import { deleteTask } from "../modules/apiClient/tasks/deleteTask";
 import { useFetchTasks } from "../modules/hooks/useFetchTasks";
 
 interface OperationButtonProps {
+  task: Task;
   onDelete: () => void;
 }
 
 const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  console.log(open);
+
   return (
     <Stack direction="row">
-      <IconButton aria-label="edit">
+      <IconButton aria-label="edit" onClick={handleOpen}>
         <EditIcon />
       </IconButton>
+      <EditModal
+        task={props.task}
+        open={open}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+      />
       <IconButton edge="end" aria-label="delete" onClick={props.onDelete}>
         <DeleteIcon />
       </IconButton>
@@ -154,6 +171,7 @@ const IndexPage = () => {
                 key={task.id}
                 secondaryAction={
                   <OperationButtons
+                    task={task}
                     onDelete={() => {
                       handleDelete(task.id);
                     }}
