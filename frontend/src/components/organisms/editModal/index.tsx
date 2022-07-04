@@ -34,7 +34,6 @@ const EditModal: React.VFC<EditModalProps> = (props) => {
       };
       await updateTask(params);
       props.handleClose();
-      // reset();
     } catch (e) {
       console.log(e);
     }
