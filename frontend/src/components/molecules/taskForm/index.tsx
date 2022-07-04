@@ -3,12 +3,15 @@ import { Button, Container, Stack, TextField } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
+import { Task } from "../../../modules/apiClient/tasks/common";
+
 export interface taskFormValues {
   title: string;
   description: string;
 }
 
 interface TaskFormProps {
+  task?: Task;
   onSubmit: SubmitHandler<taskFormValues>;
 }
 
@@ -33,8 +36,8 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
     resolver: yupResolver(taskSchema),
     mode: "onChange",
     defaultValues: {
-      title: "",
-      description: "",
+      title: props.task ? props.task.name : "",
+      description: props.task ? props.task.description : "",
     },
   });
 
@@ -80,7 +83,7 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
           sx={{ height: "40px" }}
           onClick={handleSubmit(props.onSubmit)}
         >
-          作成
+          {props.task ? "編集" : "作成"}
         </Button>
       </Stack>
     </Container>

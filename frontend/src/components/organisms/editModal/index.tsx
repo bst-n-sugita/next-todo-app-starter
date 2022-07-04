@@ -48,7 +48,7 @@ const EditModal: React.VFC<EditModalProps> = (props) => {
       aria-describedby="modal-description"
     >
       <Box sx={style}>
-        <TaskForm onSubmit={onSubmit} />
+        <TaskForm task={props.task} onSubmit={onSubmit} />
       </Box>
     </Modal>
   );
