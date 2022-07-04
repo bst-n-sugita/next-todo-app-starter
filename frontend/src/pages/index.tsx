@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 
-import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import {
   Avatar,
-  Button,
   Container,
   IconButton,
   List,
@@ -14,12 +12,11 @@ import {
   ListItemAvatar,
   ListItemText,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
+import { SubmitHandler } from "react-hook-form";
 
+import TaskForm, { taskFormValues } from "../components/molecules/taskForm";
 import EditModal from "../components/organisms/editModal";
 import { addTask } from "../modules/apiClient/tasks/addTask";
 import { Task } from "../modules/apiClient/tasks/common";
@@ -28,15 +25,17 @@ import { useFetchTasks } from "../modules/hooks/useFetchTasks";
 
 interface OperationButtonProps {
   task: Task;
+  fetchTasks: () => void;
   onDelete: () => void;
 }
 
 const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  console.log(open);
+  const handleClose = () => {
+    setOpen(false);
+    props.fetchTasks();
+  };
 
   return (
     <Stack direction="row">
@@ -56,40 +55,10 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
   );
 };
 
-interface newTaskFormValues {
-  title: string;
-  description: string;
-}
-
 const IndexPage = () => {
-  const { tasks, setTasks } = useFetchTasks();
+  const { tasks, setTasks, fetchTasks } = useFetchTasks();
 
-  const newTaskSchema = yup.object({
-    title: yup
-      .string()
-      .max(20, "20文字以内にしてください")
-      .required("入力必須です"),
-    description: yup
-      .string()
-      .max(20, "20文字以内にしてください")
-      .required("入力必須です"),
-  });
-
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<newTaskFormValues>({
-    resolver: yupResolver(newTaskSchema),
-    mode: "onChange",
-    defaultValues: {
-      title: "",
-      description: "",
-    },
-  });
-
-  const onSubmit = async (formValues: newTaskFormValues) => {
+  const onSubmit: SubmitHandler<taskFormValues> = async (formValues) => {
     try {
       const params = {
         name: formValues.title,
@@ -97,7 +66,7 @@ const IndexPage = () => {
       };
       const { data } = await addTask(params);
       setTasks((prev) => [...prev, data.addTask]);
-      reset();
+      // reset();
     } catch (e) {
       console.log(e);
     }
@@ -118,51 +87,7 @@ const IndexPage = () => {
       <Typography variant="h3" align="center" marginTop={3} gutterBottom>
         TODO LIST
       </Typography>
-      <Container maxWidth="sm">
-        <Stack direction="row" spacing={1}>
-          <Controller
-            name="title"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                id="title"
-                label="タイトル"
-                variant="outlined"
-                size="small"
-                sx={{ width: "40%" }}
-                required
-                error={"title" in errors}
-                helperText={errors.title?.message}
-              />
-            )}
-          />
-          <Controller
-            name="description"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                id="description"
-                label="内容"
-                variant="outlined"
-                size="small"
-                sx={{ width: "60%" }}
-                required
-                error={"description" in errors}
-                helperText={errors.description?.message}
-              />
-            )}
-          />
-          <Button
-            variant="contained"
-            sx={{ height: "40px" }}
-            onClick={handleSubmit(onSubmit)}
-          >
-            作成
-          </Button>
-        </Stack>
-      </Container>
+      <TaskForm onSubmit={onSubmit} />
       {tasks && (
         <Container maxWidth="sm">
           <List sx={{ width: "100%" }}>
@@ -172,6 +97,9 @@ const IndexPage = () => {
                 secondaryAction={
                   <OperationButtons
                     task={task}
+                    fetchTasks={() => {
+                      fetchTasks();
+                    }}
                     onDelete={() => {
                       handleDelete(task.id);
                     }}

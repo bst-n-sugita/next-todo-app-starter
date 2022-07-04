@@ -1,6 +1,9 @@
-import { Modal, Box, Typography } from "@mui/material";
+import { Modal, Box } from "@mui/material";
+import { SubmitHandler } from "react-hook-form";
 
 import { Task } from "../../../modules/apiClient/tasks/common";
+import { updateTask } from "../../../modules/apiClient/tasks/updateTask";
+import TaskForm, { taskFormValues } from "../../molecules/taskForm";
 
 interface EditModalProps {
   task: Task;
@@ -15,11 +18,26 @@ const EditModal: React.VFC<EditModalProps> = (props) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 600,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
+  };
+
+  const onSubmit: SubmitHandler<taskFormValues> = async (formValues) => {
+    try {
+      const params = {
+        taskId: props.task.id,
+        name: formValues.title,
+        description: formValues.description,
+      };
+      await updateTask(params);
+      props.handleClose();
+      // reset();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -30,21 +48,7 @@ const EditModal: React.VFC<EditModalProps> = (props) => {
       aria-describedby="modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-title" variant="h6" component="h2">
-          Text in a modal
-        </Typography>
-        <Typography id="modal-description" sx={{ mt: 2 }}>
-          {props.task.description}
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been dummy text ever since the 1500s, when
-          an unknown printer took a galley of type and scrambled it to make a
-          type specimen book. It has survived not only five centuries, but also
-          the leap into electronic typesetting, remaining essentially unchanged.
-          It was popularised in the 1960s with the release of Letraset sheets
-          containing Lorem Ipsum passages, and more recently with desktop
-          publishing software like Aldus PageMaker including versions of Lorem
-          Ipsum.
-        </Typography>
+        <TaskForm onSubmit={onSubmit} />
       </Box>
     </Modal>
   );

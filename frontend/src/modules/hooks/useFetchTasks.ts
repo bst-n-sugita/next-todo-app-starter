@@ -22,5 +22,6 @@ export const useFetchTasks = () => {
   return {
     tasks,
     setTasks,
+    fetchTasks,
   };
 };
