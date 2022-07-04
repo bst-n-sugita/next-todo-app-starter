@@ -66,7 +66,7 @@ const IndexPage = () => {
       };
       const { data } = await addTask(params);
       setTasks((prev) => [...prev, data.addTask]);
-      // reset();
+      // reset(); 本当はここでフォームをクリアしたい
     } catch (e) {
       console.log(e);
     }

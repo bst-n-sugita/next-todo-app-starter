@@ -30,7 +30,7 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
   const {
     control,
     handleSubmit,
-    reset,
+    // reset, 新規作成の時にフォームをクリアしたい
     formState: { errors },
   } = useForm<taskFormValues>({
     resolver: yupResolver(taskSchema),
