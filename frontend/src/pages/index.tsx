@@ -13,15 +13,20 @@ import {
   Stack,
 } from "@mui/material";
 
+import { deleteTask } from "../modules/apiClient/tasks/deleteTask";
 import { useFetchTasks } from "../modules/hooks/useFetchTasks";
 
-const OperationButtons = () => {
+interface OperationButtonProps {
+  onDelete: () => void;
+}
+
+const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
   return (
     <Stack direction="row">
       <IconButton aria-label="edit">
         <EditIcon />
       </IconButton>
-      <IconButton edge="end" aria-label="delete">
+      <IconButton edge="end" aria-label="delete" onClick={props.onDelete}>
         <DeleteIcon />
       </IconButton>
     </Stack>
@@ -29,7 +34,17 @@ const OperationButtons = () => {
 };
 
 const IndexPage = () => {
-  const { tasks } = useFetchTasks();
+  const { tasks, setTasks } = useFetchTasks();
+
+  const handleDelete = async (taskId: number) => {
+    try {
+      await deleteTask(taskId);
+      const updatedTasks = tasks.filter((task) => task.id !== taskId);
+      setTasks(updatedTasks);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
@@ -40,7 +55,16 @@ const IndexPage = () => {
         <Container maxWidth="sm">
           <List sx={{ width: "100%" }}>
             {tasks.map((task) => (
-              <ListItem key={task.id} secondaryAction={<OperationButtons />}>
+              <ListItem
+                key={task.id}
+                secondaryAction={
+                  <OperationButtons
+                    onDelete={() => {
+                      handleDelete(task.id);
+                    }}
+                  />
+                }
+              >
                 <ListItemAvatar>
                   <Avatar>
                     <FactCheckIcon />
