@@ -31,7 +31,6 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
     control,
     handleSubmit,
     // reset, 新規作成の時にフォームをクリアしたい
-    formState: { errors },
   } = useForm<taskFormValues>({
     resolver: yupResolver(taskSchema),
     mode: "onChange",
@@ -47,7 +46,7 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
         <Controller
           name="title"
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
               id="title"
@@ -56,15 +55,15 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
               size="small"
               sx={{ width: "40%" }}
               required
-              error={"title" in errors}
-              helperText={errors.title?.message}
+              error={!!error}
+              helperText={error?.message}
             />
           )}
         />
         <Controller
           name="description"
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
               id="description"
@@ -73,8 +72,8 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
               size="small"
               sx={{ width: "60%" }}
               required
-              error={"description" in errors}
-              helperText={errors.description?.message}
+              error={!!error}
+              helperText={error?.message}
             />
           )}
         />
