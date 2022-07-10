@@ -72,11 +72,11 @@ const IndexPage = () => {
     },
   });
 
-  const onSubmit = async (formValues: newTaskFormValues) => {
+  const onSubmit = async ({ title, description }: newTaskFormValues) => {
     try {
       const params = {
-        name: formValues.title,
-        description: formValues.description,
+        name: title,
+        description: description,
       };
       const { data } = await addTask(params);
       setTasks((prev) => [...prev, data.addTask]);
