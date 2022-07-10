@@ -58,12 +58,7 @@ const IndexPage = () => {
       .required("入力必須です"),
   });
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<newTaskFormValues>({
+  const { control, handleSubmit, reset } = useForm<newTaskFormValues>({
     resolver: yupResolver(newTaskSchema),
     mode: "onChange",
     defaultValues: {
@@ -106,7 +101,7 @@ const IndexPage = () => {
           <Controller
             name="title"
             control={control}
-            render={({ field }) => (
+            render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
                 id="title"
@@ -115,15 +110,15 @@ const IndexPage = () => {
                 size="small"
                 sx={{ width: "40%" }}
                 required
-                error={"title" in errors}
-                helperText={errors.title?.message}
+                error={!!error}
+                helperText={error?.message}
               />
             )}
           />
           <Controller
             name="description"
             control={control}
-            render={({ field }) => (
+            render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
                 id="description"
@@ -132,8 +127,8 @@ const IndexPage = () => {
                 size="small"
                 sx={{ width: "60%" }}
                 required
-                error={"description" in errors}
-                helperText={errors.description?.message}
+                error={!!error}
+                helperText={error?.message}
               />
             )}
           />
