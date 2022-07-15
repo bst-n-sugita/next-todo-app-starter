@@ -29,12 +29,16 @@ interface OperationButtonProps {
   onDelete: () => void;
 }
 
-const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
+const OperationButtons: React.VFC<OperationButtonProps> = ({
+  task,
+  fetchTasks,
+  onDelete,
+}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    props.fetchTasks();
+    fetchTasks();
   };
 
   return (
@@ -42,13 +46,8 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
       <IconButton aria-label="edit" onClick={handleOpen}>
         <EditIcon />
       </IconButton>
-      <EditModal
-        task={props.task}
-        open={open}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-      />
-      <IconButton edge="end" aria-label="delete" onClick={props.onDelete}>
+      <EditModal task={task} open={open} handleClose={handleClose} />
+      <IconButton edge="end" aria-label="delete" onClick={onDelete}>
         <DeleteIcon />
       </IconButton>
     </Stack>
@@ -58,11 +57,14 @@ const OperationButtons: React.VFC<OperationButtonProps> = (props) => {
 const IndexPage = () => {
   const { tasks, setTasks, fetchTasks } = useFetchTasks();
 
-  const onSubmit: SubmitHandler<taskFormValues> = async (formValues) => {
+  const onSubmit: SubmitHandler<taskFormValues> = async ({
+    title,
+    description,
+  }) => {
     try {
       const params = {
-        name: formValues.title,
-        description: formValues.description,
+        name: title,
+        description: description,
       };
       const { data } = await addTask(params);
       setTasks((prev) => [...prev, data.addTask]);

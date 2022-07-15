@@ -15,7 +15,7 @@ interface TaskFormProps {
   onSubmit: SubmitHandler<taskFormValues>;
 }
 
-const TaskForm: React.VFC<TaskFormProps> = (props) => {
+const TaskForm: React.VFC<TaskFormProps> = ({ task, onSubmit }) => {
   const taskSchema = yup.object({
     title: yup
       .string()
@@ -31,8 +31,8 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
     resolver: yupResolver(taskSchema),
     mode: "onChange",
     defaultValues: {
-      title: props.task ? props.task.name : "",
-      description: props.task ? props.task.description : "",
+      title: task ? task.name : "",
+      description: task ? task.description : "",
     },
   });
 
@@ -77,11 +77,11 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
           variant="contained"
           sx={{ height: "40px" }}
           onClick={handleSubmit((value) => {
-            props.onSubmit(value);
+            onSubmit(value);
             reset();
           })}
         >
-          {props.task ? "編集" : "作成"}
+          {task ? "編集" : "作成"}
         </Button>
       </Stack>
     </Container>

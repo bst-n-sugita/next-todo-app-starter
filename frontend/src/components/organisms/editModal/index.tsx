@@ -8,11 +8,10 @@ import TaskForm, { taskFormValues } from "../../molecules/taskForm";
 interface EditModalProps {
   task: Task;
   open: boolean;
-  handleOpen: () => void;
   handleClose: () => void;
 }
 
-const EditModal: React.VFC<EditModalProps> = (props) => {
+const EditModal: React.VFC<EditModalProps> = ({ task, open, handleClose }) => {
   const style = {
     position: "absolute" as const,
     top: "50%",
@@ -25,15 +24,18 @@ const EditModal: React.VFC<EditModalProps> = (props) => {
     p: 4,
   };
 
-  const onSubmit: SubmitHandler<taskFormValues> = async (formValues) => {
+  const onSubmit: SubmitHandler<taskFormValues> = async ({
+    title,
+    description,
+  }) => {
     try {
       const params = {
-        taskId: props.task.id,
-        name: formValues.title,
-        description: formValues.description,
+        taskId: task.id,
+        name: title,
+        description: description,
       };
       await updateTask(params);
-      props.handleClose();
+      handleClose();
     } catch (e) {
       console.log(e);
     }
@@ -41,13 +43,13 @@ const EditModal: React.VFC<EditModalProps> = (props) => {
 
   return (
     <Modal
-      open={props.open}
-      onClose={props.handleClose}
+      open={open}
+      onClose={handleClose}
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
       <Box sx={style}>
-        <TaskForm task={props.task} onSubmit={onSubmit} />
+        <TaskForm task={task} onSubmit={onSubmit} />
       </Box>
     </Modal>
   );
