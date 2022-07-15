@@ -27,11 +27,7 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
       .required("入力必須です"),
   });
 
-  const {
-    control,
-    handleSubmit,
-    // reset, 新規作成の時にフォームをクリアしたい
-  } = useForm<taskFormValues>({
+  const { control, handleSubmit, reset } = useForm<taskFormValues>({
     resolver: yupResolver(taskSchema),
     mode: "onChange",
     defaultValues: {
@@ -80,7 +76,10 @@ const TaskForm: React.VFC<TaskFormProps> = (props) => {
         <Button
           variant="contained"
           sx={{ height: "40px" }}
-          onClick={handleSubmit(props.onSubmit)}
+          onClick={handleSubmit((value) => {
+            props.onSubmit(value);
+            reset();
+          })}
         >
           {props.task ? "編集" : "作成"}
         </Button>
