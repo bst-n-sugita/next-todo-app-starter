@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
@@ -148,4 +148,4 @@ const Tasks = () => {
   );
 };
 
-export default Tasks;
+export default withAuthenticationRequired(Tasks);
