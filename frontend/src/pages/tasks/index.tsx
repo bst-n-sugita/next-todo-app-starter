@@ -98,9 +98,7 @@ const Tasks = () => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               TODO LIST
             </Typography>
-            <IconButton
-              onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_HOST })}
-            >
+            <IconButton onClick={() => logout()}>
               <LogoutIcon />
             </IconButton>
           </Toolbar>
