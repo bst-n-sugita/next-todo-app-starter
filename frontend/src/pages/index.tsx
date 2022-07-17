@@ -12,12 +12,12 @@ import {
   ListItemAvatar,
   ListItemText,
   Stack,
-  Typography,
 } from "@mui/material";
 import { SubmitHandler } from "react-hook-form";
 
 import TaskForm, { taskFormValues } from "../components/molecules/taskForm";
 import EditModal from "../components/organisms/editModal";
+import Header from "../components/organisms/header";
 import { addTask } from "../modules/apiClient/tasks/addTask";
 import { Task } from "../modules/apiClient/tasks/common";
 import { deleteTask } from "../modules/apiClient/tasks/deleteTask";
@@ -85,9 +85,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <Typography variant="h3" align="center" marginTop={3} gutterBottom>
-        TODO LIST
-      </Typography>
+      <Header />
       <TaskForm onSubmit={onSubmit} />
       {tasks && (
         <Container maxWidth="sm">
