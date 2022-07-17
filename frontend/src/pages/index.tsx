@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
@@ -123,4 +124,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default withAuthenticationRequired(IndexPage);
