@@ -104,9 +104,6 @@ const Tasks = () => {
           </Toolbar>
         </AppBar>
       </Box>
-      <Typography variant="h3" align="center" marginTop={3} gutterBottom>
-        TODO LIST
-      </Typography>
       <TaskForm onSubmit={onSubmit} />
       {tasks && (
         <Container maxWidth="sm">
