@@ -1,6 +1,7 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 
+import Header from "../components/organisms/header";
 import { theme } from "../theme";
 
 import type { AppProps } from "next/app";
@@ -14,6 +15,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     >
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Header />
         <Component {...pageProps} />
       </ThemeProvider>
     </Auth0Provider>
