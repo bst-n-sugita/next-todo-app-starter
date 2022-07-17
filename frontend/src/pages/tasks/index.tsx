@@ -1,10 +1,14 @@
 import { useState } from "react";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
+  AppBar,
   Avatar,
+  Box,
   Container,
   IconButton,
   List,
@@ -12,6 +16,7 @@ import {
   ListItemAvatar,
   ListItemText,
   Stack,
+  Toolbar,
   Typography,
 } from "@mui/material";
 import { SubmitHandler } from "react-hook-form";
@@ -55,6 +60,8 @@ const OperationButtons: React.VFC<OperationButtonProps> = ({
 };
 
 const Tasks = () => {
+  const { logout } = useAuth0();
+
   const { tasks, setTasks, fetchTasks } = useFetchTasks();
 
   const onSubmit: SubmitHandler<taskFormValues> = async ({
@@ -85,6 +92,20 @@ const Tasks = () => {
 
   return (
     <>
+      <Box sx={{ mb: 3 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              TODO LIST
+            </Typography>
+            <IconButton
+              onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_HOST })}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </Box>
       <Typography variant="h3" align="center" marginTop={3} gutterBottom>
         TODO LIST
       </Typography>
