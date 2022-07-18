@@ -56,7 +56,7 @@ const OperationButtons: React.VFC<OperationButtonProps> = ({
   );
 };
 
-const IndexPage: NextPageWithLayout = () => {
+const IndexPage: NextPageWithLayout = withAuthenticationRequired(() => {
   const { tasks, setTasks, fetchTasks } = useFetchTasks();
 
   const onSubmit: SubmitHandler<taskFormValues> = async ({
@@ -124,10 +124,10 @@ const IndexPage: NextPageWithLayout = () => {
       )}
     </>
   );
-};
+});
 
 IndexPage.getLayout = (page: ReactElement) => {
   return <Layout>{page}</Layout>;
 };
 
-export default withAuthenticationRequired(IndexPage);
+export default IndexPage;

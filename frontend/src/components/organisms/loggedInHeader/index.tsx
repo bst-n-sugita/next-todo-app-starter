@@ -1,8 +1,8 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 
-const LoggedInHeader = () => {
+const LoggedInHeader = withAuthenticationRequired(() => {
   const { logout } = useAuth0();
 
   return (
@@ -19,6 +19,6 @@ const LoggedInHeader = () => {
       </AppBar>
     </Box>
   );
-};
+});
 
 export default LoggedInHeader;
