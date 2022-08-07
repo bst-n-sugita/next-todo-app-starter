@@ -27,6 +27,7 @@ const Login: NextPageWithLayout = () => {
 Login.getLayout = (page: ReactElement) => {
   return (
     <>
+      {/* テスト */}
       <Header />
       {page}
     </>
