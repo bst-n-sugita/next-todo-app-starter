@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
@@ -12,16 +13,17 @@ import {
   ListItemAvatar,
   ListItemText,
   Stack,
-  Typography,
 } from "@mui/material";
 import { SubmitHandler } from "react-hook-form";
 
 import TaskForm, { taskFormValues } from "../components/molecules/taskForm";
 import EditModal from "../components/organisms/editModal";
+import Layout from "../components/templates/layout";
 import { addTask } from "../modules/apiClient/tasks/addTask";
 import { Task } from "../modules/apiClient/tasks/common";
 import { deleteTask } from "../modules/apiClient/tasks/deleteTask";
 import { useFetchTasks } from "../modules/hooks/useFetchTasks";
+import { NextPageWithLayout } from "./_app";
 
 interface OperationButtonProps {
   task: Task;
@@ -54,7 +56,7 @@ const OperationButtons: React.VFC<OperationButtonProps> = ({
   );
 };
 
-const IndexPage = () => {
+const IndexPage: NextPageWithLayout = withAuthenticationRequired(() => {
   const { tasks, setTasks, fetchTasks } = useFetchTasks();
 
   const onSubmit: SubmitHandler<taskFormValues> = async ({
@@ -85,9 +87,6 @@ const IndexPage = () => {
 
   return (
     <>
-      <Typography variant="h3" align="center" marginTop={3} gutterBottom>
-        TODO LIST
-      </Typography>
       <TaskForm onSubmit={onSubmit} />
       {tasks && (
         <Container maxWidth="sm">
@@ -125,6 +124,10 @@ const IndexPage = () => {
       )}
     </>
   );
+});
+
+IndexPage.getLayout = (page: ReactElement) => {
+  return <Layout>{page}</Layout>;
 };
 
 export default IndexPage;

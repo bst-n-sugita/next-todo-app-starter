@@ -11,6 +11,7 @@
     "format:fix": "prettier --write './src/**/*.{ts,tsx}'"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^1.10.2",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@hookform/resolvers": "^2.9.3",
